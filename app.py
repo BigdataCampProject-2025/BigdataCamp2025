@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from tkinter import Image
 import streamlit as st
 import os
@@ -21,7 +20,6 @@ from typing import Literal, TypedDict
 
 # -------------------- 1. 환경 변수 설정 --------------------
 load_dotenv()
-=======
 
 import streamlit as st
 import os
@@ -38,26 +36,23 @@ from langchain_core.prompts import PromptTemplate
 # ⬛️ 1. 환경 변수 설정
 load_dotenv()
 
->>>>>>> 0481fc31e4eb6c70463597a9a707896e8dbcd360
 api_key = os.getenv("OPENAI_API_KEY")
 api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
 api_version = os.getenv("OPENAI_API_VERSION")
 
-<<<<<<< HEAD
 # -------------------- 2. Streamlit 설정 --------------------
 st.set_page_config(page_title="주식PLUS", page_icon="📈")
 st.title("📈 TOPPIC")
-=======
+
 # ⬛️ 2. Streamlit 앱 시작
 st.set_page_config(page_title="RAG 기반 주식 챗봇", page_icon="📈")
 st.title("📈 이번 주 주목할 주식 챗봇")
->>>>>>> 0481fc31e4eb6c70463597a9a707896e8dbcd360
+st.write("주식 시장의 최신 동향을 분석하고 예측합니다.")
 
 # ⬛️ 3. 세션 상태 초기화
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-<<<<<<< HEAD
 # -------------------- 3. 문서 압축 함수 --------------------
 def compress_document(doc: Document, ratio: float = 0.3) -> Document:
     original_content = doc.page_content
@@ -153,15 +148,12 @@ def analyze_ticker(ticker, period='7d', interval='15m'):
     output += f"\n📈 최근 5일간 데이터:\n{df.tail(5).to_string()}\n"
     return output
 # -------------------- 4. 뉴스 CSV 로드 및 문서 생성 --------------------
-=======
 # ⬛️ 4. CSV 로딩 함수
->>>>>>> 0481fc31e4eb6c70463597a9a707896e8dbcd360
 @st.cache_resource
 def load_news_csv(csv_path="news.csv"):
     df = pd.read_csv(csv_path)
     documents = []
-<<<<<<< HEAD
-    for _, row in df.iterrows():        
+    for _, row in df.iterrows():
         title = str(row[0]).strip()
         content = str(row[1]).strip()
         doc = Document(page_content=content, metadata={"source": title})
@@ -173,7 +165,6 @@ def load_news_csv(csv_path="news.csv"):
 @st.cache_resource
 def setup_retriever():
     documents = load_news_csv("yfinance_articles.csv")
-=======
     for idx, row in df.iterrows():
         title = str(row[0]).strip()
         content = str(row[1]).strip()
@@ -185,14 +176,12 @@ def setup_retriever():
 @st.cache_resource
 def setup_retriever():
     documents = load_news_csv("news.csv")  # 👈 경로 확인 필요
->>>>>>> 0481fc31e4eb6c70463597a9a707896e8dbcd360
     embeddings = AzureOpenAIEmbeddings(model="text-embedding-3-small")
     vectorstore = Chroma.from_documents(documents, embeddings)
     return vectorstore.as_retriever()
 
 retriever = setup_retriever()
 
-<<<<<<< HEAD
 # -------------------- 6. 프롬프트 템플릿 --------------------
 prompt_recommendation = PromptTemplate.from_template("""
 당신은 주식 전문가입니다. 아래는 주식 관련 뉴스 기사들입니다.
@@ -382,7 +371,6 @@ with open("rag_workflow.png", "wb") as f:
     f.write(graph)
 
 # -------------------- 12. Streamlit 인터페이스 --------------------
-=======
 # ⬛️ 6. 프롬프트 정의
 prompt = PromptTemplate.from_template(
     """
@@ -429,36 +417,25 @@ rag_chain = (
 )
 
 # ⬛️ 9. 기존 메시지 표시
->>>>>>> 0481fc31e4eb6c70463597a9a707896e8dbcd360
 for msg in st.session_state.messages:
     st.chat_message(msg["role"]).write(msg["content"])
 
 # ⬛️ 10. 사용자 입력 받기
 user_input = st.chat_input("무엇이든 물어보세요!")
 if user_input:
-<<<<<<< HEAD
-=======
     # 입력 저장 및 출력
->>>>>>> 0481fc31e4eb6c70463597a9a707896e8dbcd360
     st.chat_message("user").write(user_input)
     st.session_state.messages.append({"role": "user", "content": user_input})
 
     with st.spinner("답변 생성 중..."):
         try:
-<<<<<<< HEAD
             result = rag_graph.invoke({"question": user_input})
             answer = result["answer"]
-=======
+
             answer = rag_chain.invoke(user_input)
->>>>>>> 0481fc31e4eb6c70463597a9a707896e8dbcd360
             st.chat_message("assistant").write(answer)
             st.session_state.messages.append({"role": "assistant", "content": answer})
         except Exception as e:
             st.error(f"오류 발생: {e}")
-<<<<<<< HEAD
-=======
 
 
-
-
->>>>>>> 0481fc31e4eb6c70463597a9a707896e8dbcd360
