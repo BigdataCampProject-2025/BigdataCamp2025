@@ -50,12 +50,6 @@ tzdata==2025.2
 urllib3==2.5.0
 langchain-community==0.3.27
 langchain-openai==0.3.28
-<<<<<<< HEAD
-<<<<<<< HEAD
 tiktoken==0.9.0
 summa==1.2.0
 langchain-core==0.3.71
-=======
->>>>>>> 0481fc31e4eb6c70463597a9a707896e8dbcd360
-=======
->>>>>>> 0481fc31e4eb6c70463597a9a707896e8dbcd360
